@@ -1,0 +1,49 @@
+<!-- views/dash.handlebars -->
+{{#if user}}
+    <div class="jumbotron">
+        <h2>FanBach Fantasy League, '015</h2>
+        <p>I don't always say es ok, but when I do, es ok</p>
+    </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">The Girls</h3>
+    </div>
+    <div class="panel-body">
+    <div class="row">
+      {{#each girls}}
+          <div class="col-md-4">
+            <h4>{{value.name}}</h4>
+            <img src="/images/{{value.image}}" width="200">
+            <p>
+            <span class="text-muted">
+                {{#if value.eliminated}}
+                    <font color=#A2040E><strong>Elininated</strong></font>
+                {{/if}}
+                <br>Points: {{value.points}}
+            </span>
+            </p>
+          </div>
+      {{/each}}
+    </div>
+    </div>
+  </div>
+  <hr>
+  <footer><p>Any association with PrinceFarming is purely coincidential.  This is a "fan" work.</p></footer>
+{{else}}
+  <div class="jumbotron">
+    <h1><img src="/images/rose.png" eight="100">The Fantasy Rose</h1>
+    <h2><small>Step 1 </small>Grab your friends</h2>
+    <h2><small>Step 2 </small>Bid for your team</h2>
+    <h2><small>Step 3 </small>Watch as s*** hits the fan</h2>
+    <br>
+    <p>There's the final rose, and then there's the Fantasy Rose.  Join up with your friends to play a fantasy-football-esque game that will keep you watching every juicy, drama-saturated moment.  So pop the cork off that bottle of Zin you left on your kitchen counter (bigger the glass, the better, naturally), grab that pint of Ben & Jerry's out of the freezer, put on your me-night sweatpants and login.</p>
+    <p>Sign in and view your profile!</p>
+    <div class="alert alert-danger" role="alert">This project is under active development and is not fully functional.  Proceed at your own peril.</div>
+    <p>
+      <a href="/signin" class="btn btn-primary btn-lg" role="button">
+        <span class="glyphicon glyphicon-user"></span> 
+        Sign in!
+      </a>
+    </p>
+  </div>
+{{/if}}

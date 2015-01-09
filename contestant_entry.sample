@@ -1,0 +1,12 @@
+{
+    "name": "Lady Luck",            //The fair maden's namee
+    "eliminated": false,            //Has she been eliminated yet?
+    "image": "lady_luck.jpg",       //Name of picture.  located in __dirname/public/images
+    "points": 0,                    //Total points for the season
+    "events":                       //Event log.  Each week will be represented by an array of events.  The name and the mod is needed, if there is one.{
+        "0": [
+            { "name": "makeout", "mod": 5 }
+        ]
+    }
+}
+            

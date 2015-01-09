@@ -1,0 +1,55 @@
+<!-- views/admin.handlebars -->
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">Contestants</h3></div>
+    <div class="panel-body">
+        <div class="well">
+            <input type="text" id="name" class="form-control" placeholder="Name">
+            <br>
+            <button type="button" class="btn btn-med btn-info">Add Contestant</button>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Eliminated</th>
+                    <th>Points</th>
+                    <th>Image Name</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each girls}}
+                    <tr>
+                        <td>{{value.name}}</td>
+                        <td>{{value.eliminated}}</td>
+                        <td>{{value.points}}</td>
+                        <td>{{value.image}}</td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-warning">Edit</button>
+                            <button type="button" class="btn btn-sm btn-danger">Delete</button>
+                        </td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading"><h3 class="panel-title">Events</h3></div>
+    <div class="panel-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
