@@ -1,6 +1,10 @@
 {
   "name": "FantasyRose",
   "main": "index.js",
+  "description": "A fantasy-football like game for The Bachelor",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
     "bcryptjs": "^0.7.12",
     "body-parser": "^1.9.0",
