@@ -104,6 +104,7 @@ app.use(function(req, res, next){
   next();
 });
 
+app.set('port', (process.env.PORT || 5000));
 app.use('/icons',express.static(path.join(__dirname, 'public/icons')));
 app.use('/images',express.static(path.join(__dirname, 'public/images')));
 app.use('/layouts',express.static(path.join(__dirname, 'views/layouts')));
@@ -179,7 +180,7 @@ app.get('/logout', function(req, res){
 });
 
 //Start listening!
-var port = 3000;
-app.listen(port);
-console.log('listening on ' + port);
+app.listen(app.get('port'), function(){
+    console.log("Node app is running at localhost:" + app.get('port'));
+});
 
