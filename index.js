@@ -132,7 +132,7 @@ app.get('/', function(req, res){
 
 //rules page
 app.get('/rules', function(req, res){
-    res.render('rules', {});
+    res.render('rules', {user: req.user});
 });
 
 //basic middleware for admin related pages to check for authentication first.
