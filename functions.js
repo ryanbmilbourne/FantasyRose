@@ -5,12 +5,11 @@ var bcrypt = require('bcryptjs'),
     config = require('./config.js'), //config file contains all tokens and other private info
     db = require('orchestrate')(config.db); //config.db holds Orchestrate token
 
-//get contestants from db
-exports.getContestants = function(){
+var getCollection = function(collection){
     var deferred = Q.defer();
-    db.list('contestants', {limit:50}).then(function(result){
-        console.log('got %s entries',result.body.count);
-        console.log(util.inspect(result.body.results));
+    db.list(collection, {limit:50}).then(function(result){
+        console.log(collection+': got %s entries',result.body.count);
+        //console.log(util.inspect(result.body.results));
         deferred.resolve(result.body.results);
     }).fail(function(err){
         console.err('get fail: '+err.body);
@@ -18,6 +17,9 @@ exports.getContestants = function(){
     });
     return deferred.promise;
 };
+
+exports.getEvents = getCollection.bind(null,'events');
+exports.getContestants = getCollection.bind(null,'contestants');
 
 //add contestant to db
 exports.addContestant = function(key, obj){

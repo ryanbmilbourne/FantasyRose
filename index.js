@@ -148,12 +148,18 @@ app.use('/admin', function(req, res, next){
 
 //admin page
 app.get('/admin', function(req, res){
-    funct.getContestants().then(function(results){
-        console.log(util.inspect(results));
-        res.render('admin', {user: req.user, girls: results});
+    funct.getContestants().then(function(contestants){
+        funct.getEvents().then(function(events){
+            res.render('admin', {user: req.user, girls: contestants, events: events});
+        }).fail(function(err){
+            res.render('admin', {user: req.user, girls: contestants, events: {}});
+            req.session.failure= 'Error fetching database'+err.body;
+            console.error('Error fetching database'+err.body);
+        });
     }).fail(function(err){
-        res.render('admin', {user: req.user, girls: []});
-        req.session.failure= 'Error fetching contestant database'+err.body;
+        req.session.failure= 'Error fetching database'+err.body;
+        res.render('admin', {user: req.user, girls: {}, events: {}});
+        console.error('Error fetching database'+err.body);
     });
 });
 

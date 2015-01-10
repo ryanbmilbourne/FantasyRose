@@ -12,16 +12,17 @@
     <div class="row">
       {{#each girls}}
           <div class="col-md-4">
-            <h4>{{value.name}}</h4>
-            <img src="/images/{{value.image}}" width="200">
-            <p>
+            <h4>{{value.name}}
+            {{#if value.eliminated}}
+                <span class="label label-danger">Eliminated</span></h4>
+            {{else}}
+                <span class="label label-success">Active</span></h4>
+            {{/if}}
             <span class="text-muted">
-                {{#if value.eliminated}}
-                    <font color=#A2040E><strong>Elininated</strong></font>
-                {{/if}}
-                <br>Points: {{value.points}}
+                <h5>Points: {{value.points}}</h5>
             </span>
-            </p>
+            <img src="/images/{{value.image}}" width="200">
+            <br><br><br>
           </div>
       {{/each}}
     </div>
