@@ -1,0 +1,30 @@
+<!-- views/dash.handlebars -->
+    <div class="jumbotron">
+        <h2>Meet your contestants!</h2>
+    </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">The Girls</h3>
+    </div>
+    <div class="panel-body">
+    <div class="row row-centered">
+      {{#each girls}}
+          <div class="col-xs--6 col-md-3 col-centered">
+            <h4>{{value.name}}
+            {{#if value.eliminated}}
+                <span class="label label-danger">Eliminated</span></h4>
+            {{else}}
+                <span class="label label-success">Active</span></h4>
+            {{/if}}
+            <span class="text-muted">
+                <h5>Points: {{value.points}}</h5>
+            </span>
+            <img src="/images/{{value.image}}" width="200">
+            <br><br><br>
+          </div>
+      {{/each}}
+    </div>
+    </div>
+  </div>
+  <hr>
+  <footer><p>Any association with PrinceFarming is purely coincidential.  This is a "fan" work.</p></footer>

@@ -21,8 +21,30 @@ Ah, but it's a double-edged sword.  Remember Lequicia? Sucks to be her, because 
 <img src="/images/rupaul.gif" height="205">
 </p>
 <p>
-Here's a list of the events that are scored:
+Here's a list of the triggers that are worth them sweet, sweet, points:
 </p>
+<div class="well well-lg">
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Action</th>
+                <th>Point Value</th>
+                <th>Modifier</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each triggers}}
+                <tr>
+                    <td>{{path.key}}</td>
+                    <td>{{value.points}}</td>
+                    <td>{{value.modValue}} per {{value.modUnit}}</td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</div>
 <h2>Sorting through the Aftermath <small>What do all these points MEAN?</small></h2>
 <ul>
     <li>After each episode, the tallies from your players are added up and added to your season total.

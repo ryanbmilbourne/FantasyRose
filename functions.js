@@ -18,8 +18,22 @@ var getCollection = function(collection){
     return deferred.promise;
 };
 
-exports.getEvents = getCollection.bind(null,'events');
+var putToCollection = function(collection, key, obj){
+    var deferred = Q.defer();
+    db.put(collection, key, obj).then(function(result){
+        console.log('put item: %s', key);
+        deferred.resolve(result);
+    }).fail(function(err){
+        console.err('error putting item: '+err.body);
+        deferred.reject(new Error(err.body));
+    });
+    return deferred.promise;
+};
+
+exports.getTriggers = getCollection.bind(null,'triggers');
 exports.getContestants = getCollection.bind(null,'contestants');
+
+exports.putTrigger = putToCollection.bind(null, 'triggers');
 
 //add contestant to db
 exports.addContestant = function(key, obj){

@@ -15,11 +15,26 @@
                         <h4 class="modal-title" id="myModalLabel">Add Contestant</h4>
                         </div>
                         <div class="modal-body">
-                            <h6>Girl look at that body</h6>
+                            <form id="add-contestant" action="/contestants" method="post">
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" class="form-control" placeholder="Taylor S">
+                                </div>
+                                <div class="form-group">
+                                    <label for="name">Age</label>
+                                    <input type="text" name="age" class="form-control" placeholder="22">
+                                </div>
+                                <div class="form-group">
+                                    <label for="image">Image name</label>
+                                    <input type="text" name="image" class="form-control" placeholder="taylor_s.jpg">
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-primary" value="Save Changes"/>
+                                </div>
+                            </form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
                 </div>
@@ -49,7 +64,7 @@
                         <td>{{value.name}}</td>
                         <td>{{value.eliminated}}</td>
                         <td>{{value.points}}</td>
-                        <td>{{value.image}}</td>
+                        <td><a href="images/{{value.image}}">{{value.image}}</a></td>
                     </tr>
                 {{/each}}
                 </tbody>
@@ -59,8 +74,49 @@
 </div>
 
 <div class="panel panel-default">
-    <div class="panel-heading"><h3 class="panel-title">Events</h3></div>
+    <div class="panel-heading"><h3 class="panel-title">Triggers</h3></div>
     <div class="panel-body">
+            <a href="#" class="btn btn-md btn-success"
+                data-toggle="modal"
+                data-target="#addTriggerModal">Click to Add</a>
+            <div class="modal fade" id="addTriggerModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Add Trigger</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="add-event" action="/triggers" method="post">
+                                <div class="form-group">
+                                    <label for="name">Name</label>
+                                    <input type="text" name="name" class="form-control" placeholder="kiss on the lips">
+                                </div>
+                                <div class="form-group">
+                                    <label for="points">Point Value</label>
+                                    <input type="number" name="points" class="form-control" placeholder="5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modUnit">Modifyer Unit</label>
+                                    <input type="text" name="modUnit" class="form-control" placeholder="second">
+                                </div>
+                                <div class="form-group">
+                                    <label for="modValue">Modifyer Value</label>
+                                    <input type="number" name="modValue" class="form-control" placeholder="1">
+                                </div>
+                                <div>
+                                    <input type="submit" class="btn btn-primary" value="Save Changes"/>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -73,7 +129,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {{#each events}}
+                {{#each triggers}}
                     <tr>
                         <td>
                             <button type="button" class="btn btn-sm btn-default">
@@ -84,8 +140,8 @@
                             </button>
                         </td>
                         <td>{{path.key}}</td>
-                        <td>{{value.value}}</td>
-                        <td>{{value.modType}}</td>
+                        <td>{{value.points}}</td>
+                        <td>{{value.modUnit}}</td>
                         <td>{{value.modValue}}</td>
                     </tr>
                 {{/each}}
