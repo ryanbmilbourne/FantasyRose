@@ -18,63 +18,6 @@ var express = require('express'),
 var app = express();
 
 //================
-//Passport middleware
-//================
-
-// Passport session setup.
-passport.serializeUser(function(user, done) {
-    console.log("serializing " + user.username);
-    done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-    console.log("deserializing " + obj);
-    done(null, obj);
-});
-
-//Local sign-in
-passport.use('local-signin', new LocalStrategy(
-    {passReqToCallback: true},
-    function(req, username, password, done){
-        funct.localAuth(username, password, done)
-        .then(function(user){
-            if(user){
-                console.log('logged in as: '+user.username);
-                req.session.success = user.username + ' logged in.';
-            } else {
-                console.log('could not log in');
-                req.session.error = 'Could not log user in.  Try again.'; //for user
-            }
-            done(null, user);
-        })
-        .fail(function(err){
-            console.err('error: '+err.body);
-        });
-    }
-));
-
-//local sign-up
-passport.use('local-signup', new LocalStrategy(
-    {passReqToCallback: true},
-    function(req, username, password, done){
-        funct.localReg(username, password, done)
-        .then(function(user){
-            if(user){
-                console.log('registered '+user.username);
-                req.session.success = user.username + ' registered and logged in.';
-            } else {
-                console.log('could not register user');
-                req.session.error = 'That username is taken! Please try a different one.'; //for user
-            }
-            done(null, user);
-        })
-        .fail(function(err){
-            console.err('error: '+err.body);
-        });
-    }
-));
-
-//================
 //Configure express
 //================
 
@@ -130,127 +73,16 @@ app.get('/', function(req, res){
     });
 });
 
+require('./routes/userauth.js')(app, passport, LocalStrategy, funct);
+
 //rules page
-app.get('/rules', function(req, res){
-    funct.getTriggers().then(function(results){
-        res.render('rules', {user: req.user, triggers: results});
-    }).fail(function(err){
-        res.render('rules', {user: req.user, triggers: []});
-        req.session.failure= 'Error fetching contestant database'+err.body;
-    });
-});
+require('./routes/rules.js')(app, funct);
 
-//girls page
-app.get('/girls', function(req, res){
-    funct.getContestants().then(function(results){
-        res.render('girls', {user: req.user, girls: results});
-    }).fail(function(err){
-        res.render('girls', {user: req.user, girls: []});
-        req.session.failure= 'Error fetching contestant database'+err.body;
-    });
-});
+//contestants page
+require('./routes/contestants.js')(app, funct);
 
-//basic middleware for admin related pages to check for authentication first.
-app.use('/admin', function(req, res, next){
-    if(req.isAuthenticated()){
-        if(req.user.admin){ return next();}
-        req.session.error = 'You must be signed in as an Adminstrator to view the requested page.';
-        res.redirect('/');
-    }
-    req.session.error = 'You must be signed in to view the requested page.';
-    res.redirect('/signin');
-});
-
-//admin page
-app.get('/admin', function(req, res){
-    funct.getContestants().then(function(contestants){
-        funct.getTriggers().then(function(triggers){
-            res.render('admin', {user: req.user, girls: contestants, triggers: triggers});
-        }).fail(function(err){
-            res.render('admin', {user: req.user, girls: contestants, triggers: {}});
-            req.session.failure= 'Error fetching database'+err.body;
-            console.error('Error fetching database'+err.body);
-        });
-    }).fail(function(err){
-        req.session.failure= 'Error fetching database'+err.body;
-        res.render('admin', {user: req.user, girls: {}, triggers: {}});
-        console.error('Error fetching database'+err.body);
-    });
-});
-
-//add a contestant.  Called from the admin page.
-app.post('/contestants', function(req, res, next){
-    console.log('rx contestant add: '+util.inspect(req.body));
-    if(!req.isAuthenticated()){
-        req.session.error = 'You must be signed in to view the requested page.';
-        res.redirect('/signin');
-        return next();
-    }
-    if(!req.user.admin){
-        req.session.error = 'You must be signed in as an Adminstrator to view the requested page.';
-        res.redirect('/');
-        return next();
-    }
-    funct.putContestant(req.body.name, req.body).then(function(result){
-        req.session.success='Contestant '+req.body.name+' added.';
-        res.redirect('admin');
-        res.sendStatus(201);
-    }).fail(function(err){
-        req.session.failure='Error putting to database: '+err.body;
-        res.redirect('admin');
-        res.sendStatus(500);
-    });
-});
-
-//add an event type.  Called from the admin page.
-app.post('/triggers', function(req, res, next){
-    console.log('rx trigger add: '+util.inspect(req.body));
-    if(!req.isAuthenticated()){
-        req.session.error = 'You must be signed in to view the requested page.';
-        res.redirect('/signin');
-        return next();
-    }
-    if(!req.user.admin){
-        req.session.error = 'You must be signed in as an Adminstrator to view the requested page.';
-        res.redirect('/');
-        return next();
-    }
-    funct.putTrigger(req.body.name, req.body).then(function(result){
-        req.session.success='Trigger '+req.body.name+' added.';
-        res.redirect('admin');
-        res.sendStatus(201);
-    }).fail(function(err){
-        req.session.failure='Error putting to database: '+err.body;
-        res.redirect('admin');
-        res.sendStatus(500);
-    });
-});
-
-//sign-in/up page
-app.get('/signin', function(req, res){
-    res.render('signin');
-});
-
-//handle signup route
-app.post('/local-reg', passport.authenticate('local-signup', {
-    successRedirect: '/',
-    failureRedirect: '/signin'
-}) );
-
-//handle sign-in route
-app.post('/login', passport.authenticate('local-signin', { 
-    successRedirect: '/',
-    failureRedirect: '/signin'
-}) );
-
-//logout
-app.get('/logout', function(req, res){
-    var name = req.user.username;
-    console.log("LOGGIN OUT " + req.user.username)
-    req.logout();
-    res.redirect('/');
-    req.session.notice = "You have successfully been logged out " + name + "!";
-});
+//admin routes
+require('./routes/admin.js')(app, util, funct);
 
 //Start listening!
 app.listen(app.get('port'), function(){
