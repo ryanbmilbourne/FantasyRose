@@ -16,19 +16,7 @@ module.exports = function(app, util, funct){
 
     //admin page
     app.get('/admin', function(req, res){
-        funct.getContestants().then(function(contestants){
-            funct.getTriggers().then(function(triggers){
-                res.render('admin', {user: req.user, girls: contestants, triggers: triggers});
-            }).fail(function(err){
-                res.render('admin', {user: req.user, girls: contestants, triggers: {}});
-                req.session.failure= 'Error fetching database'+err.body;
-                console.error('Error fetching database'+err.body);
-            });
-        }).fail(function(err){
-            req.session.failure= 'Error fetching database'+err.body;
-            res.render('admin', {user: req.user, girls: {}, triggers: {}});
-            console.error('Error fetching database'+err.body);
-        });
+        res.render('admin', {user: req.user});
     });
 
     //add a contestant.  Called from the admin page.

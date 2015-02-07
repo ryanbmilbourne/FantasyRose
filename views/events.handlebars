@@ -1,0 +1,29 @@
+<!-- views/events.handlebars -->
+<div class="jumbotron">
+    <h2>Did you see something juicy?</h2>
+</div>
+<h3>What'd you see during week {{week}}?</h3>
+<form id="report-event" action="/events" method="post">
+    <div class="form-group">
+        <label for="name">Contestant:</label>
+        <select class="form-control" id="name">
+            {{#each girls}}
+            {{#if value.eliminated}} 
+            {{else}}
+            <option>{{value.name}}</option>
+            {{/if}}
+            {{/each}}
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="trigger">Event:</label>
+        <select class="form-control" id="trigger">
+            {{#each triggers}}
+            <option>{{path.key}}</option>
+            {{/each}}
+        </select>
+    </div>
+    <div>
+        <input type="submit" class="btn btn-primary" value="Save Event"/>
+    </div>
+</form>

@@ -5,6 +5,8 @@ var bcrypt = require('bcryptjs'),
     config = require('./config.js'), //config file contains all tokens and other private info
     db = require('orchestrate')(config.db); //config.db holds Orchestrate token
 
+var weekNum = 3;
+
 var getCollection = function(collection){
     var deferred = Q.defer();
     db.list(collection, {limit:50}).then(function(result){
@@ -34,6 +36,18 @@ exports.getTriggers = getCollection.bind(null,'triggers');
 exports.getContestants = getCollection.bind(null,'contestants');
 
 exports.putTrigger = putToCollection.bind(null, 'triggers');
+
+exports.postEvent = function(obj){
+    var deferred = Q.defer();
+    db.post('events', obj).then(function(result){
+        console.log('post item: %s', obj);
+        deferred.resolve(result);
+    }).fail(function(err){
+        console.err('error putting item: '+err.body);
+        deferred.reject(new Error(err.body));
+    });
+    return deferred.promise;
+};
 
 //add contestant to db
 exports.addContestant = function(key, obj){
@@ -81,6 +95,7 @@ exports.localReg = function(username, password) {
 
 // for local sign-in
 exports.localAuth = function(username, password){
+exports.weekNum = weekNum;
     var deferred = Q.defer();
 
     db.get('local-users', username).then(function(result){

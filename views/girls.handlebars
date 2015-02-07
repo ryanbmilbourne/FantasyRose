@@ -1,4 +1,4 @@
-<!-- views/dash.handlebars -->
+<!-- views/girls.handlebars -->
     <div class="jumbotron">
         <h2>Meet your contestants!</h2>
     </div>
@@ -7,24 +7,27 @@
       <h3 class="panel-title">The Girls</h3>
     </div>
     <div class="panel-body">
-    <div class="row row-centered">
-      {{#each girls}}
+    <div id="contestants" class="row row-centered">
+    <img src="/images/heart.svg" id="loading-indicator" style="display:none" />
+    </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-latest.min.js"    type="text/javascript"></script>
+    <script id="contestant-template" type="text/x-handlebars-template">
           <div class="col-xs--6 col-md-3 col-centered">
-            <h4>{{value.name}}
-            {{#if value.eliminated}}
+            <h4>\{{name}}
+            \{{#if eliminated}}
                 <span class="label label-danger">Eliminated</span></h4>
-            {{else}}
+            \{{else}}
                 <span class="label label-success">Active</span></h4>
-            {{/if}}
+            \{{/if}}
             <span class="text-muted">
-                <h5>Points: {{value.points}}</h5>
+                <h5>Points: \{{points}}</h5>
             </span>
-            <img src="/images/{{value.image}}" width="200">
+            <img src="/images/\{{image}}" width="200">
             <br><br><br>
           </div>
-      {{/each}}
-    </div>
-    </div>
+    </script>
+    <script id="getContestants" src="js/getContestants.js" type="text/javascript"></script>
   </div>
   <hr>
   <footer><p>Any association with PrinceFarming is purely coincidential.  This is a "fan" work.</p></footer>

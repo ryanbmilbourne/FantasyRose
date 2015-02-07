@@ -51,6 +51,7 @@ app.set('port', (process.env.PORT || 5000));
 app.use('/icons',express.static(path.join(__dirname, 'public/icons')));
 app.use('/images',express.static(path.join(__dirname, 'public/images')));
 app.use('/layouts',express.static(path.join(__dirname, 'views/layouts')));
+app.use('/js',express.static(path.join(__dirname, 'public/javascripts')));
 
 // Configure express to use handlebars templates
 var hbs = exphbs.create({
@@ -66,9 +67,9 @@ app.set('view engine', 'handlebars');
 //home
 app.get('/', function(req, res){
     funct.getContestants().then(function(results){
-        res.render('home', {user: req.user, girls: results});
+        res.render('home', {week: funct.weekNum, user: req.user, girls: results});
     }).fail(function(err){
-        res.render('home', {user: req.user, girls: []});
+        res.render('home', {week: funct.weekNum, user: req.user, girls: []});
         req.session.failure= 'Error fetching contestant database'+err.body;
     });
 });
@@ -81,8 +82,14 @@ require('./routes/rules.js')(app, funct);
 //contestants page
 require('./routes/contestants.js')(app, funct);
 
+//event reporting page
+require('./routes/events.js')(app, util, funct);
+
 //admin routes
 require('./routes/admin.js')(app, util, funct);
+
+//api routes
+require('./routes/api.js')(app, util, funct);
 
 //Start listening!
 app.listen(app.get('port'), function(){

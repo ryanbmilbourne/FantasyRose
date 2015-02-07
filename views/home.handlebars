@@ -1,7 +1,7 @@
 <!-- views/dash.handlebars -->
 {{#if user}}
     <div class="jumbotron">
-        <h2>FanBach Fantasy League, '015</h2>
+        <h2>Current week: {{week}}
         <p>I don't always say es ok, but when I do, es ok</p>
     </div>
   <div class="panel panel-default">
@@ -9,24 +9,27 @@
       <h3 class="panel-title">The Girls</h3>
     </div>
     <div class="panel-body">
-    <div class="row row-centered">
-      {{#each girls}}
+    <div id="contestants" class="row row-centered">
+    <img src="/images/heart.svg" id="loading-indicator" style="display:none" />
+    </div>
+    </div>
+    <script src="http://code.jquery.com/jquery-latest.min.js"    type="text/javascript"></script>
+    <script id="contestant-template" type="text/x-handlebars-template">
           <div class="col-xs--6 col-md-3 col-centered">
-            <h4>{{value.name}}
-            {{#if value.eliminated}}
+            <h4>\{{name}}
+            \{{#if eliminated}}
                 <span class="label label-danger">Eliminated</span></h4>
-            {{else}}
+            \{{else}}
                 <span class="label label-success">Active</span></h4>
-            {{/if}}
+            \{{/if}}
             <span class="text-muted">
-                <h5>Points: {{value.points}}</h5>
+                <h5>Points: \{{points}}</h5>
             </span>
-            <img src="/images/{{value.image}}" width="200">
+            <img src="/images/\{{image}}" width="200">
             <br><br><br>
           </div>
-      {{/each}}
-    </div>
-    </div>
+    </script>
+    <script src="js/getContestants.js" type="text/javascript"></script>
   </div>
   <hr>
   <footer><p>Any association with PrinceFarming is purely coincidential.  This is a "fan" work.</p></footer>
@@ -37,9 +40,9 @@
     <h2><small>Step 2 </small>Bid for your team</h2>
     <h2><small>Step 3 </small>Watch as s*** hits the fan</h2>
     <br>
-    <p>There's the final rose, and then there's the Fantasy Rose.  Join up with your friends to play a fantasy-football-esque game that will keep you watching every juicy, drama-saturated moment.  So pop the cork off that bottle of Zin you left on your kitchen counter (bigger the glass, the better, naturally), grab that pint of Ben & Jerry's out of the freezer, put on your me-night sweatpants and login.</p>
+    <p>There's the final rose, and then there's the Fantasy Rose.  Join up with your friends to play a fantasy-football-esque game that will keep you watching every juicy, drama-saturated moment.</p>
     <p>Sign in and view your profile!</p>
-    <div class="alert alert-danger" role="alert">This project is under active development and is not fully functional.  Proceed at your own peril.</div>
+    <div class="alert alert-danger" role="alert"><strong>This project is under active development and is not fully functional.  Proceed at your own peril.</strong></div>
     <p>
       <a href="/signin" class="btn btn-primary btn-lg" role="button">
         <span class="glyphicon glyphicon-user"></span> 

@@ -97,6 +97,12 @@ body {
   margin-top: 0;
 }
 
+/*
+ * Loading whrilygig
+ */
+#loading-indicator {
+  position: relative;
+}
 
 /*
  * Placeholder dashboard ideas

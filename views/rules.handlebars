@@ -5,7 +5,7 @@ The problem with running a team-based fantasy league agains a show like The Bach
 </p>
 <h2>Auction <small>It's all about the money</small></h2>
 <p>
-Players will be allocated a total of 10,0000 rosebux to spend throughout the season on girls that they deem valuable.  This may seem like a lot, but be careful, it has to last the entire season, from the First Impression rose to the Fantasy Suite.
+Players will be allocated a total of 10,000 dollars to spend throughout the season on girls that they deem valuable.  This may seem like a lot, but be careful; it has to last the entire season, from the First Impression rose to the Fantasy Suite.
 </p>
 <ul>
     <li>On the Friday before each episode, the auction will open for the show airing on the following monday.  From then until the show starts, the auction is open for bidding.</li>
@@ -24,6 +24,9 @@ Ah, but it's a double-edged sword.  Remember Lequicia? Sucks to be her, because 
 Here's a list of the triggers that are worth them sweet, sweet, points:
 </p>
 <div class="well well-lg">
+    <div class="row row-centered">
+        <img src="/images/heart.svg" id="loading-indicator" style="display:none" />
+    </div>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -33,14 +36,16 @@ Here's a list of the triggers that are worth them sweet, sweet, points:
                 <th>Modifier</th>
             </tr>
             </thead>
-            <tbody>
-            {{#each triggers}}
-                <tr>
-                    <td>{{path.key}}</td>
-                    <td>{{value.points}}</td>
-                    <td>{{value.modValue}} per {{value.modUnit}}</td>
-                </tr>
-            {{/each}}
+            <tbody id="triggers">
+                <script src="http://code.jquery.com/jquery-latest.min.js"    type="text/javascript"></script>
+                <script id="trigger-template" type="text/x-handlebars-template">
+                    <tr>
+                        <td>\{{path.key}}</td>
+                        <td>\{{value.points}}</td>
+                        <td>\{{value.modValue}} per {{value.modUnit}}</td>
+                    </tr>
+                </script>
+                <script id="getTriggers" src="js/getTriggers.js" type="text/javascript"></script>
             </tbody>
         </table>
     </div>
