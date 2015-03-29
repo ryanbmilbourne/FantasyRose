@@ -3,7 +3,9 @@
  */
 
 module.exports = function(app, util, funct){
+    //for promises
     var Q = require('q');
+
     app.use('/api', function(req, res, next){
         if(!req.isAuthenticated()){
             req.session.error = 'You must be signed in to view the requested page.';
@@ -25,6 +27,29 @@ module.exports = function(app, util, funct){
             return next();
         });
     });
+
+    /*
+     * Add a contestant.  Called from admin page.
+     */
+    app.post('/api/contestants', function(req, res, next){
+        console.log('rx contestant add: '+util.inspect(req.body));
+        if(!req.user.admin){
+            req.session.error = 'You need to be an admin to access this route!';
+            res.redirect('/');
+            return next();
+        }
+        funct.putContestant(req.body.name, req.body).then(function(result){
+            console.log(util.inspect(result));
+            req.session.success='Contestant '+req.body.name+' added.';
+            res.redirect('admin');
+            res.sendStatus(201);
+        }).fail(function(err){
+            req.session.failure='Error putting to database: '+err.body;
+            res.redirect('admin');
+            res.sendStatus(500);
+        });
+    });
+
     /**
      * Get triggers array (Triggers are things users report that are worth points
      */
@@ -36,6 +61,28 @@ module.exports = function(app, util, funct){
             req.session.failure = 'error fetching database: '+err.body;
             res.send(500);
             return next();
+        });
+    });
+
+    /*
+     * Add a trigger.  Called from admin page.
+     */
+    app.post('/api/triggers', function(req, res, next){
+        console.log('rx trigger add: '+util.inspect(req.body));
+        if(!req.user.admin){
+            req.session.error = 'You must be signed in as an Adminstrator to view the requested page.';
+            res.redirect('/');
+            return next();
+        }
+        funct.putTrigger(req.body.name, req.body).then(function(result){
+            console.log(util.inspect(result));
+            req.session.success='Trigger '+req.body.name+' added.';
+            res.redirect('admin');
+            res.sendStatus(201);
+        }).fail(function(err){
+            req.session.failure='Error putting to database: '+err.body;
+            res.redirect('admin');
+            res.sendStatus(500);
         });
     });
 
@@ -72,6 +119,7 @@ module.exports = function(app, util, funct){
         console.log(contestantObj);
 
         funct.postEvent(eventObj).then(function(result){
+            console.log(util.inspect(result));
             req.session.success = 'Event logged!';
             res.redirect('events');
             res.sendStatus(201);
