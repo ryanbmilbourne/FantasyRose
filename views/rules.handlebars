@@ -42,10 +42,14 @@ Here's a list of the triggers that are worth them sweet, sweet, points:
                     <tr>
                         <td>\{{path.key}}</td>
                         <td>\{{value.points}}</td>
-                        <td>\{{value.modValue}} per {{value.modUnit}}</td>
+                        \{{#if value.modValue}}
+                        <td>\{{value.modValue}} points per \{{value.modUnit}}</td>
+                        \{{else}}
+                        <td>-</td>
+                        \{{/if}}
                     </tr>
                 </script>
-                <script id="getTriggers" src="js/getTriggers.js" type="text/javascript"></script>
+                <script id="getTriggers" src="js/getTriggers.js" containerId="triggers" type="text/javascript"></script>
             </tbody>
         </table>
     </div>

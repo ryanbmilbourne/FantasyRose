@@ -3,24 +3,27 @@
     <h2>Did you see something juicy?</h2>
 </div>
 <h3>What'd you see during week {{week}}?</h3>
-<form id="report-event" action="/events" method="post">
+<form role="form" id="report-event" action="/api/events" method="post">
     <div class="form-group">
-        <label for="name">Contestant:</label>
-        <select class="form-control" id="name">
-            {{#each girls}}
-            {{#if value.eliminated}} 
-            {{else}}
-            <option>{{value.name}}</option>
-            {{/if}}
-            {{/each}}
+        <label for="name">Contestant</label>
+        <select class="form-control" id="name" name="name">
+            <script src="http://code.jquery.com/jquery-latest.min.js"    type="text/javascript"></script>
+            <script id="contestant-template" type="text/x-handle-bars-template">
+                \{{#if value.eliminated}} 
+                \{{else}}
+                <option>\{{name}}</option>
+                \{{/if}}
+            </script>
+            <script id="getContestants" src="js/getContestants.js" containerId="name" type="text/javascript"></script>
         </select>
     </div>
     <div class="form-group">
-        <label for="trigger">Event:</label>
-        <select class="form-control" id="trigger">
-            {{#each triggers}}
-            <option>{{path.key}}</option>
-            {{/each}}
+        <label for="trigger">Event</label>
+        <select class="form-control" id="trigger" name="trigger">
+            <script id="trigger-template" type="text/x-handlebars-template">
+                <option >\{{path.key}}</option>
+            </script>
+            <script id="getTriggers" src="js/getTriggers.js" containerId="trigger" type="text/javascript"></script>
         </select>
     </div>
     <div>

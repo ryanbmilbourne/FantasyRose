@@ -18,31 +18,4 @@ module.exports = function(app, util, funct){
     app.get('/events', function(req, res, next){
         res.render('events', {week: funct.weekNum, user: req.user});
     });
-
-    /*
-     * POST adding an event
-     */
-    app.post('/events', function(req, res, next){
-        console.log('rx event: '+util.inspect(req.body));
-        if(!req.isAuthenticated() && !req.user.admin){
-            req.session.error = 'You must be an admin to make a post to this route.';
-            res.redirect('/signin');
-            return next();
-        }
-        funct.postEvent({
-                week: funct.weekNum, 
-                name: req.body.name,
-                trigger: req.body.trigger,
-                modCount: req.body.modCount
-          }).then(function(result){
-            req.session.success = 'Event logged!';
-            res.redirect('events');
-            res.sendStatus(201);
-        }).fail(function(err){
-            req.session.failure = 'Error putting to database: '+err.body;
-            res.redirect('events');
-            res.sendStatus(500);
-        });
-
-    });
 };

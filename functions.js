@@ -20,6 +20,7 @@ var getCollection = function(collection){
     return deferred.promise;
 };
 
+
 var putToCollection = function(collection, key, obj){
     var deferred = Q.defer();
     db.put(collection, key, obj).then(function(result){
@@ -40,10 +41,23 @@ exports.putTrigger = putToCollection.bind(null, 'triggers');
 exports.postEvent = function(obj){
     var deferred = Q.defer();
     db.post('events', obj).then(function(result){
-        console.log('post item: %s', obj);
+        console.log('post item: %s', util.inspect(obj));
         deferred.resolve(result);
     }).fail(function(err){
         console.err('error putting item: '+err.body);
+        deferred.reject(new Error(err.body));
+    });
+    return deferred.promise;
+};
+
+//get an item from a collection
+exports.getOne = function(collection, key){
+    var deferred = Q.defer();
+    db.get(collection, key).then(function(result){
+        console.log('got \n%s \nfrom %s', util.inspect(result.body), collection);
+        deferred.resolve(result.body);
+    }).fail(function(err){
+        console.err('get fail: '+err.body);
         deferred.reject(new Error(err.body));
     });
     return deferred.promise;
